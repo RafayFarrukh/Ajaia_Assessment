@@ -1,0 +1,84 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           Int                @id @default(autoincrement())
+  email        String             @unique
+  name         String
+  passwordHash String             @map("password_hash")
+  createdAt    DateTime           @default(now()) @map("created_at")
+  documents    Document[]
+  shares       Share[]
+  revisions    DocumentRevision[]
+  comments     Comment[]
+
+  @@map("users")
+}
+
+model Document {
+  id        Int                @id @default(autoincrement())
+  ownerId   Int                @map("owner_id")
+  owner     User               @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  title     String             @default("Untitled document")
+  content   String             @default("")
+  createdAt DateTime           @default(now()) @map("created_at")
+  updatedAt DateTime           @updatedAt @map("updated_at")
+  shares    Share[]
+  revisions DocumentRevision[]
+  comments  Comment[]
+
+  @@index([ownerId])
+  @@map("documents")
+}
+
+model DocumentRevision {
+  id         Int      @id @default(autoincrement())
+  documentId Int      @map("document_id")
+  document   Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  authorId   Int?     @map("author_id")
+  author     User?    @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  title      String
+  content    String
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  @@index([documentId, createdAt])
+  @@map("document_revisions")
+}
+
+model Comment {
+  id         Int      @id @default(autoincrement())
+  documentId Int      @map("document_id")
+  document   Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  authorId   Int      @map("author_id")
+  author     User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  body       String
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  @@index([documentId, createdAt])
+  @@map("comments")
+}
+
+enum ShareRole {
+  VIEWER
+  EDITOR
+}
+
+model Share {
+  id         Int       @id @default(autoincrement())
+  documentId Int       @map("document_id")
+  document   Document  @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  userId     Int       @map("user_id")
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role       ShareRole @default(EDITOR)
+  createdAt  DateTime  @default(now()) @map("created_at")
+
+  @@unique([documentId, userId])
+  @@index([userId])
+  @@map("shares")
+}

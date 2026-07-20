@@ -1,0 +1,33 @@
+services:
+  db:
+    image: postgres:17
+    container_name: ajaia-docs-db
+    ports:
+      - "5433:5432" # 5433 on the host to avoid clashing with any local Postgres
+    environment:
+      POSTGRES_USER: ajaia
+      POSTGRES_PASSWORD: ajaia
+      POSTGRES_DB: ajaia_docs
+    volumes:
+      - ajaia_docs_pgdata:/var/lib/postgresql/data
+      - ./scripts/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+
+  # Database GUI — browse tables, run SQL. http://localhost:5051
+  # Login: admin@ajaia.dev / admin123 · the "Ajaia Docs" server is
+  # preconfigured; its DB password is "ajaia".
+  # (.dev, not .test — pgAdmin rejects reserved TLDs in its login email.)
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: ajaia-docs-pgadmin
+    ports:
+      - "5051:80" # 5051 to avoid clashing with any existing pgAdmin on 5050
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@ajaia.dev
+      PGADMIN_DEFAULT_PASSWORD: admin123
+    volumes:
+      - ./scripts/pgadmin-servers.json:/pgadmin4/servers.json
+    depends_on:
+      - db
+
+volumes:
+  ajaia_docs_pgdata:

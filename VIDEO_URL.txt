@@ -1,0 +1,11 @@
+Walkthrough video (3–5 min): TODO — record and paste unlisted Loom/YouTube link here.
+
+Suggested outline (matches the assignment's asks):
+1. Login as Alice → create a doc → format text (bold/italic/underline, headings, lists) → rename → refresh to show persistence
+2. Import a .md file → show it became an editable document
+3. Share with bob@ajaia.test (can edit) and carol@ajaia.test (view only)
+4. Sign in as Bob → edit the shared doc; as Carol → show read-only view
+   (with two windows open: point out the "viewing now" presence chip)
+5. Stretch features: History panel → restore a version; Comments panel; Export → Markdown/PDF
+6. Deprioritized: character-level real-time co-editing, registration, attachments — and why
+6. AI workflow: Claude Code for scaffolding + stack migration; the setEditable phantom-save bug it introduced and how verification caught it
