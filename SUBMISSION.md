@@ -11,14 +11,29 @@ Candidate: Rafay Farrukh (rafayfarrukh941@gmail.com)
 | Architecture note | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) |
 | AI workflow note | [docs/AI_WORKFLOW.md](docs/AI_WORKFLOW.md) |
 | Automated tests | `server/test/api.test.ts` (22 tests) — `npm test` |
-| Deployment config | [render.yaml](render.yaml) (Render blueprint) + [Dockerfile](Dockerfile) |
+| Deployment config & guide | [render.yaml](render.yaml) · [Dockerfile](Dockerfile) · [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) |
 | Live product URL | **TODO — add before submitting** |
 | Walkthrough video URL | [VIDEO_URL.txt](VIDEO_URL.txt) — **TODO — add before submitting** |
 
 ## Test accounts
 
-All with password `password123` (one-click buttons on the login screen):
-`alice@ajaia.test` · `bob@ajaia.test` · `carol@ajaia.test`
+No signup needed — the login screen has **one-click buttons** for each account.
+
+| Email | Password | Use for |
+|---|---|---|
+| `alice@ajaia.test` | `password123` | document owner (starts with a welcome doc) |
+| `bob@ajaia.test` | `password123` | share target — "can edit" role |
+| `carol@ajaia.test` | `password123` | share target — "view only" role |
+
+**To review the sharing flow:** sign in as Alice → open a document → **Share** →
+add `bob@ajaia.test` as *Can edit* and `carol@ajaia.test` as *View only* → sign
+out → sign in as each of them to see the document under *Shared with me* with
+their respective permissions.
+
+> **Note on the live URL:** it is hosted on a free tier that sleeps after ~15
+> minutes of inactivity, so **the very first page load may take up to ~50
+> seconds** while the instance wakes up. Everything is fast after that. This is
+> a hosting-plan characteristic, not application latency.
 
 ## What is working (end to end)
 

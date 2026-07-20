@@ -1,5 +1,11 @@
-# Render blueprint: one web service + managed Postgres.
-# Deploy: push this repo to GitHub → Render Dashboard → New → Blueprint.
+# Render blueprint — deploys the whole product as ONE free web service.
+# Express serves both the API and the built React client, so there is no
+# second frontend deployment and no cross-domain cookie problem.
+#
+# DATABASE_URL is intentionally NOT provisioned here: the free Postgres that
+# Render can create is deleted after ~30 days, which would kill the demo
+# mid-review. Use a free Neon database instead and paste its connection
+# string when Render prompts for it. See docs/DEPLOYMENT.md.
 services:
   - type: web
     name: ajaia-docs
@@ -12,12 +18,6 @@ services:
       - key: NODE_ENV
         value: production
       - key: JWT_SECRET
-        generateValue: true
+        generateValue: true # Render generates a strong random secret
       - key: DATABASE_URL
-        fromDatabase:
-          name: ajaia-docs-db
-          property: connectionString
-
-databases:
-  - name: ajaia-docs-db
-    plan: free
+        sync: false # prompted at deploy time — paste the Neon connection string

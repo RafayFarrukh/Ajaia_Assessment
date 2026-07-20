@@ -69,12 +69,19 @@ Tests run against a dedicated `ajaia_docs_test` database (created automatically 
 
 ## Deploy
 
-Two supported paths, both free-tier friendly:
+**Full step-by-step guide: [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)** — free, no credit card.
 
-- **Render (recommended):** push to GitHub, then *New → Blueprint* — [render.yaml](render.yaml) provisions the web service + Postgres and wires `DATABASE_URL`/`JWT_SECRET` automatically.
-- **Any container host (Railway, Fly.io, …):** build the [Dockerfile](Dockerfile), supply `DATABASE_URL` and `JWT_SECRET` env vars.
+Short version: create a free [Neon](https://neon.tech) Postgres database, then on
+[Render](https://render.com) choose *New → Blueprint* and point it at this repo.
+[render.yaml](render.yaml) configures the service; paste the Neon connection string
+when prompted for `DATABASE_URL`. A [Dockerfile](Dockerfile) is included for any
+container host as an alternative.
 
-`npm start` runs `prisma migrate deploy` before booting, so schema setup on deploy is automatic. In production, Express serves the built client, so the whole product is a single service.
+`npm start` runs `prisma migrate deploy` before booting and the server seeds demo
+users on startup, so a fresh deployment is immediately reviewable with no manual
+database setup. In production Express serves the built client too, so the whole
+product is **a single service on one origin** — which also keeps the session
+cookie first-party.
 
 ## Project layout
 
