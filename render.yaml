@@ -11,7 +11,9 @@ services:
     name: ajaia-docs
     runtime: node
     plan: free
-    buildCommand: npm install && npx -w server prisma generate && npm run build
+    # --include=dev is required: NODE_ENV=production (below) makes npm skip
+    # devDependencies by default, but the build needs TypeScript and Vite.
+    buildCommand: npm install --include=dev && npx -w server prisma generate && npm run build
     startCommand: npm start
     healthCheckPath: /api/health
     envVars:
